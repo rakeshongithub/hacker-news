@@ -1,0 +1,50 @@
+@import "./../../scss/variabels.scss";
+
+.ListContainer {
+  padding: 30px 0;
+}
+
+.NewsItems {
+  .ListItems {
+    padding: 5px 40px;
+    .Comments {
+      width: 70px;
+    }
+    .UpVotesCount {
+      width: 50px;
+    }
+    .NewsTitle {
+      padding: 0 5px 0 0;
+    }
+    .LinkedDomain {
+      padding: 0 5px 0 0;
+    }
+  }
+  .ListItems:nth-last-of-type(odd) {
+    background-color: $hc-grey5;
+  }
+  .ListItems:nth-last-of-type(even) {
+    background-color: $hc-grey4;
+  }
+
+  a {
+    color: $hc-black;
+    text-decoration: none;
+    &:hover {
+      color: $hc-primary;
+    }
+  }
+}
+
+.LoadMore {
+  padding: 10px 40px 0;
+  cursor: pointer;
+  color: $hc-primary;
+  &:hover {
+    color: darken($color: $hc-primary, $amount: 10%);
+  }
+}
+
+.IsLoading {
+  padding: 10px 40px;
+}

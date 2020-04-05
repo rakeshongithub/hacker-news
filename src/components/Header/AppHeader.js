@@ -3,11 +3,11 @@ import styles from "./AppHeader.module.scss";
 
 import logo from "./../../imgs/logo.png";
 
-function AppHeader() {
+const AppHeader = () => {
   return (
     <header id="app-header" className={[styles.AppHeader, "d-flex"].join(" ")}>
       <div className={styles.AppLogo}>
-        <img src={logo} />
+        <img src={logo} alt="Hacker News" />
       </div>
       <nav className={styles.AppNav}>
         <ul className="d-inline-flex">
@@ -17,6 +17,6 @@ function AppHeader() {
       </nav>
     </header>
   );
-}
+};
 
 export default AppHeader;
