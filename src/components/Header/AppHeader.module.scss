@@ -1,0 +1,25 @@
+@import "./../../scss/variabels.scss";
+
+.AppHeader {
+  background-color: $hc-primary;
+  color: $hc-white;
+  padding: 10px 8px;
+  line-height: normal;
+
+  .AppLogo {
+    margin-right: 15px;
+  }
+
+  .AppNav {
+    li {
+      padding: 0 10px;
+      border-left: 1px solid $hc-black;
+      cursor: pointer;
+
+      &:first-child {
+        border: 0;
+        padding-left: 0;
+      }
+    }
+  }
+}
