@@ -21,5 +21,16 @@
         padding-left: 0;
       }
     }
+
+    a {
+      color: $hc-black;
+      text-decoration: none;
+      &:hover {
+        color: $hc-white;
+      }
+      &.Active {
+        color: $hc-white;
+      }
+    }
   }
 }
