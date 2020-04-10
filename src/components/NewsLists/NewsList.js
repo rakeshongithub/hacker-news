@@ -4,25 +4,47 @@ import requestService from "./../../utils/requestService";
 import styles from "./NewsLists.module.scss";
 import ListItems from "./ListItems";
 import localStorageService from "../../services/localStorageService";
+import REQ_URLS from "./../../enums/urls";
 
-const NewsLists = (props) => {
+const NewsLists = () => {
   const [page, setPage] = useState(1);
   const [newsLists, setNewsLists] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+
+  const extractCachedData = (reqUrl) => {
+    const cacheData = localStorageService.getItem(reqUrl);
+    const checkExpiry = (cacheData) =>
+      new Date().getTime() - cacheData.expiry >
+      localStorageService.expiry * 60 * 60 * 1000;
+    if (cacheData && checkExpiry(cacheData)) {
+      localStorageService.clear();
+    }
+    return cacheData;
+  };
+
+  const setDataToList = (response, reqUrl, setNewsLists, setIsLoading) => {
+    if (
+      response &&
+      response.data &&
+      response.data.hits &&
+      response.data.hits.length
+    ) {
+      const filteredData = response.data.hits.filter(
+        (item) => item.title && item.url
+      );
+      localStorageService.setItem(reqUrl, filteredData);
+      console.info("Successfully load data for news");
+      setNewsLists(filteredData);
+      setIsLoading(false);
+    }
+  };
 
   useEffect(() => {
     const getNewLists = async () => {
       setIsLoading(true);
       try {
-        const reqUrl = `/search?page=${page}`;
-        const cacheData = localStorageService.getItem(reqUrl);
-        const checkExpiry = (cacheData) =>
-          new Date().getTime() - cacheData.expiry >
-          localStorageService.expiry * 60 * 60 * 1000;
-
-        if (cacheData && checkExpiry(cacheData)) {
-          localStorageService.clear();
-        }
+        const reqUrl = REQ_URLS.searchURLByPage(page);
+        const cacheData = extractCachedData(reqUrl);
         if (cacheData) {
           console.info("Successfully load data for news from cache");
           setNewsLists(cacheData.value);
@@ -30,17 +52,7 @@ const NewsLists = (props) => {
           return;
         }
         const response = await requestService.get(reqUrl);
-        if (
-          response &&
-          response.data &&
-          response.data.hits &&
-          response.data.hits.length
-        ) {
-          localStorageService.setItem(reqUrl, response.data);
-          console.info("Successfully load data for news");
-          setNewsLists(response.data);
-          setIsLoading(false);
-        }
+        setDataToList(response, reqUrl, setNewsLists, setIsLoading);
       } catch (err) {
         setIsLoading(true);
         console.error("Failed to load data", err);
@@ -54,10 +66,47 @@ const NewsLists = (props) => {
     setPage(page + 1);
   };
 
+  const handleHideItem = (index) => {
+    const reqUrl = REQ_URLS.searchURLByPage(page);
+    console.log("=> Initiated hide item");
+    const cacheData = extractCachedData(reqUrl);
+    if (cacheData) {
+      const updatedData = [
+        ...cacheData.value.slice(0, index),
+        ...cacheData.value.slice(index + 1),
+      ];
+      setNewsLists(updatedData);
+      localStorageService.setItem(reqUrl, updatedData);
+    }
+  };
+
+  const handleUpvote = (index) => {
+    const reqUrl = REQ_URLS.searchURLByPage(page);
+    console.log("=> Initiated upvote item");
+    const cacheData = extractCachedData(reqUrl);
+    if (cacheData) {
+      const updatedData = [
+        ...cacheData.value.slice(0, index),
+        {
+          ...cacheData.value[index],
+          points: cacheData.value[index].points + 1,
+        },
+        ...cacheData.value.slice(index + 1),
+      ];
+      setNewsLists(updatedData);
+      localStorageService.setItem(reqUrl, updatedData);
+    }
+  };
+
   return (
     <div className={styles.ListContainer}>
       <div className={styles.NewsItems}>
-        <ListItems newsLists={newsLists} isLoading={isLoading} />
+        <ListItems
+          handleHideItem={handleHideItem}
+          handleUpvote={handleUpvote}
+          newsLists={newsLists}
+          isLoading={isLoading}
+        />
       </div>
       <div className={styles.LoadMore}>
         <span onClick={() => loadMoreNews()}>More...</span>

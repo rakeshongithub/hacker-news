@@ -89,9 +89,9 @@
       span {
         color: $hc-black;
         cursor: pointer;
-        &:hover {
-          color: $hc-primary;
-        }
+        // &:hover {
+        //   color: $hc-primary;
+        // }
       }
     }
     .HideAction {
