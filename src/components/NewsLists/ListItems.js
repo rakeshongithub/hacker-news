@@ -1,13 +1,14 @@
 import React from "react";
 import styles from "./NewsLists.module.scss";
 import ArrowDropUpIcon from "@material-ui/icons/ArrowDropUp";
+import LoadingComponent from "../UI/Loading";
 
 const ListItems = (props) => {
   const { newsLists, isLoading } = props;
   return (
     <React.Fragment>
       {isLoading ? (
-        <div className={styles.IsLoading}>loading...</div>
+        <LoadingComponent className={styles.IsLoading} />
       ) : (
         newsLists.hits.map((item) => {
           if (item.title && item.url) {

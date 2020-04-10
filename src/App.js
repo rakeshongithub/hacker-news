@@ -1,17 +1,20 @@
-import React from "react";
+import React, { Suspense, lazy } from "react";
 import { BrowserRouter as Router } from "react-router-dom";
 
-import AppHeader from "./components/Header/AppHeader";
 import styles from "./App.module.scss";
-import AppRoutes from "./components/Routes/routes";
+import LoadingComponent from "./components/UI/Loading";
+const AppRoutes = lazy(() => import("./components/Routes/routes"));
+const AppHeader = lazy(() => import("./components/Header/AppHeader"));
 
 const App = () => {
   return (
     <Router basename={"/"}>
-      <div className={["container d-flex flex-column", styles.App].join(" ")}>
-        <AppHeader />
-        <AppRoutes />
-      </div>
+      <Suspense fallback={<LoadingComponent />}>
+        <div className={["container d-flex flex-column", styles.App].join(" ")}>
+          <AppHeader />
+          <AppRoutes />
+        </div>
+      </Suspense>
     </Router>
   );
 };
