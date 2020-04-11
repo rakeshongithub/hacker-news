@@ -5,6 +5,7 @@ import styles from "./NewsLists.module.scss";
 import ListItems from "./ListItems";
 import localStorageService from "../../services/localStorageService";
 import REQ_URLS from "./../../enums/urls";
+import logger from "./../../logger/logger";
 
 const NewsLists = () => {
   const [page, setPage] = useState(1);
@@ -33,7 +34,7 @@ const NewsLists = () => {
         (item) => item.title && item.url
       );
       localStorageService.setItem(reqUrl, filteredData);
-      console.info("Successfully load data for news");
+      logger.debug("Successfully load data for news", "NewsList");
       setNewsLists(filteredData);
       setIsLoading(false);
     }
@@ -46,7 +47,7 @@ const NewsLists = () => {
         const reqUrl = REQ_URLS.searchURLByPage(page);
         const cacheData = extractCachedData(reqUrl);
         if (cacheData) {
-          console.info("Successfully load data for news from cache");
+          logger.debug("=> Successfully load data for news from cache");
           setNewsLists(cacheData.value);
           setIsLoading(false);
           return;
@@ -55,7 +56,7 @@ const NewsLists = () => {
         setDataToList(response, reqUrl, setNewsLists, setIsLoading);
       } catch (err) {
         setIsLoading(true);
-        console.error("Failed to load data", err);
+        logger.error("<= Failed to load data", err);
       }
     };
 
@@ -68,7 +69,7 @@ const NewsLists = () => {
 
   const handleHideItem = (index) => {
     const reqUrl = REQ_URLS.searchURLByPage(page);
-    console.log("=> Initiated hide item");
+    logger.debug("=> Initiated hide item");
     const updatedData = [
       ...newsLists.slice(0, index),
       ...newsLists.slice(index + 1),
@@ -79,7 +80,7 @@ const NewsLists = () => {
 
   const handleUpvote = (index) => {
     const reqUrl = REQ_URLS.searchURLByPage(page);
-    console.log("=> Initiated upvote item");
+    logger.debug("=> Initiated upvote item");
     const updatedData = [
       ...newsLists.slice(0, index),
       {
