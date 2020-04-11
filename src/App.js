@@ -10,7 +10,7 @@ const App = () => {
   return (
     <Router basename={"/"}>
       <Suspense fallback={<LoadingComponent />}>
-        <div className={["container d-flex flex-column", styles.App].join(" ")}>
+        <div className={["container", styles.App].join(" ")}>
           <AppHeader />
           <AppRoutes />
         </div>
