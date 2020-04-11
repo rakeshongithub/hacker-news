@@ -69,33 +69,27 @@ const NewsLists = () => {
   const handleHideItem = (index) => {
     const reqUrl = REQ_URLS.searchURLByPage(page);
     console.log("=> Initiated hide item");
-    const cacheData = extractCachedData(reqUrl);
-    if (cacheData) {
-      const updatedData = [
-        ...cacheData.value.slice(0, index),
-        ...cacheData.value.slice(index + 1),
-      ];
-      setNewsLists(updatedData);
-      localStorageService.setItem(reqUrl, updatedData);
-    }
+    const updatedData = [
+      ...newsLists.slice(0, index),
+      ...newsLists.slice(index + 1),
+    ];
+    setNewsLists(updatedData);
+    localStorageService.setItem(reqUrl, updatedData);
   };
 
   const handleUpvote = (index) => {
     const reqUrl = REQ_URLS.searchURLByPage(page);
     console.log("=> Initiated upvote item");
-    const cacheData = extractCachedData(reqUrl);
-    if (cacheData) {
-      const updatedData = [
-        ...cacheData.value.slice(0, index),
-        {
-          ...cacheData.value[index],
-          points: cacheData.value[index].points + 1,
-        },
-        ...cacheData.value.slice(index + 1),
-      ];
-      setNewsLists(updatedData);
-      localStorageService.setItem(reqUrl, updatedData);
-    }
+    const updatedData = [
+      ...newsLists.slice(0, index),
+      {
+        ...newsLists[index],
+        points: newsLists[index].points + 1,
+      },
+      ...newsLists.slice(index + 1),
+    ];
+    setNewsLists(updatedData);
+    localStorageService.setItem(reqUrl, updatedData);
   };
 
   return (
