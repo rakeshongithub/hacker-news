@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 
-import requestService from "./../../utils/requestService";
-import styles from "./NewsLists.module.scss";
-import ListItems from "./ListItems";
-import localStorageService from "../../services/localStorageService";
-import REQ_URLS from "./../../enums/urls";
-import logger from "./../../logger/logger";
+import requestService from "../../../utils/requestService";
+import styles from "./../NewsLists.module.scss";
+import ListItems from "../ListItems";
+import localStorageService from "../../../services/localStorageService";
+import REQ_URLS from "../../../enums/urls";
+import logger from "../../../logger/logger";
 
-const NewsLists = () => {
+const NewNewsLists = () => {
   const [page, setPage] = useState(1);
   const [newsLists, setNewsLists] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -34,7 +34,7 @@ const NewsLists = () => {
         (item) => item.title && item.url
       );
       localStorageService.setItem(reqUrl, filteredData);
-      logger.debug("Successfully load data for news", "NewsList");
+      logger.debug("=> Successfully load data for new news", "NewsList");
       setNewsLists(filteredData);
       setIsLoading(false);
     }
@@ -44,10 +44,10 @@ const NewsLists = () => {
     const getNewLists = async () => {
       setIsLoading(true);
       try {
-        const reqUrl = REQ_URLS.searchURLByPage(page);
+        const reqUrl = REQ_URLS.searchURLByQuery(page);
         const cacheData = extractCachedData(reqUrl);
         if (cacheData) {
-          logger.debug("=> Successfully load data for news from cache");
+          logger.debug("=> Successfully load data for new news from cache");
           setNewsLists(cacheData.value);
           setIsLoading(false);
           return;
@@ -68,7 +68,7 @@ const NewsLists = () => {
   };
 
   const handleHideItem = (index) => {
-    const reqUrl = REQ_URLS.searchURLByPage(page);
+    const reqUrl = REQ_URLS.searchURLByQuery(page);
     logger.debug("=> Initiated hide item");
     const updatedData = [
       ...newsLists.slice(0, index),
@@ -79,7 +79,7 @@ const NewsLists = () => {
   };
 
   const handleUpvote = (index) => {
-    const reqUrl = REQ_URLS.searchURLByPage(page);
+    const reqUrl = REQ_URLS.searchURLByQuery(page);
     logger.debug("=> Initiated upvote item");
     const updatedData = [
       ...newsLists.slice(0, index),
@@ -110,4 +110,4 @@ const NewsLists = () => {
   );
 };
 
-export default NewsLists;
+export default NewNewsLists;
