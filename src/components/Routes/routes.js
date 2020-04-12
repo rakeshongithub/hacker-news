@@ -1,10 +1,10 @@
 import React, { Suspense, lazy } from "react";
 import { Switch, Redirect, Route } from "react-router-dom";
 import LoadingComponent from "../UI/Loading";
-const TopNewsLists = lazy(() =>
+export const TopNewsLists = lazy(() =>
   import("../NewsLists/TopNewsLists/TopNewsLists")
 );
-const NewNewsLists = lazy(() =>
+export const NewNewsLists = lazy(() =>
   import("../NewsLists/NewNewsLists/NewNewsLists")
 );
 

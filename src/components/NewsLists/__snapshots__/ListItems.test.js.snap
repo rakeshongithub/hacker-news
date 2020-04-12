@@ -1,0 +1,5 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`List Items Component should renders list items component without crashing 1`] = `ShallowWrapper {}`;
+
+exports[`List Items Component should return empty array if no data available 1`] = `ShallowWrapper {}`;

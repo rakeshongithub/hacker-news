@@ -5,7 +5,7 @@ import LoadingComponent from "../UI/Loading";
 import { dateDiff } from "./../../utils/utils";
 
 const ListItems = (props) => {
-  const { newsLists, isLoading, handleHideItem, handleUpvote } = props;
+  const { newsLists = [], isLoading, handleHideItem, handleUpvote } = props;
   return (
     <React.Fragment>
       {isLoading ? (

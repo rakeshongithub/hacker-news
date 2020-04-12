@@ -3,8 +3,8 @@ import { BrowserRouter as Router } from "react-router-dom";
 
 import styles from "./App.module.scss";
 import LoadingComponent from "./components/UI/Loading";
-const AppRoutes = lazy(() => import("./components/Routes/routes"));
-const AppHeader = lazy(() => import("./components/Header/AppHeader"));
+export const AppRoutes = lazy(() => import("./components/Routes/routes"));
+export const AppHeader = lazy(() => import("./components/Header/AppHeader"));
 
 const App = () => {
   return (
